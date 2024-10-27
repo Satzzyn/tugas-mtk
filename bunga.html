@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kalkulator Bunga</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+        }
+        label, input, select {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        input[type="number"], select {
+            padding: 10px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Kalkulator Bunga</h2>
+        <label for="amount">Jumlah Pokok (P):</label>
+        <input type="number" id="amount" placeholder="Masukkan jumlah pokok" />
+
+        <label for="rate">Tingkat Bunga (% per tahun):</label>
+        <input type="number" id="rate" placeholder="Masukkan tingkat bunga" />
+
+        <label for="time">Periode Waktu (n dalam tahun):</label>
+        <input type="number" id="time" placeholder="Masukkan periode waktu" />
+
+        <label for="type">Jenis Bunga:</label>
+        <select id="type">
+            <option value="simple">Bunga Tunggal</option>
+            <option value="compound">Bunga Majemuk</option>
+            <option value="annuity">Anuitas</option>
+        </select>
+
+        <button onclick="calculate()">Hitung</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const rate = parseFloat(document.getElementById('rate').value) / 100;
+            const time = parseFloat(document.getElementById('time').value);
+            const type = document.getElementById('type').value;
+            let result;
+
+            if (isNaN(amount) || isNaN(rate) || isNaN(time)) {
+                result = "Mohon masukkan nilai yang valid.";
+            } else {
+                switch(type) {
+                    case 'simple':
+                        result = amount * (1 + (rate * time));
+                        result = `Nilai akhir dengan Bunga Tunggal adalah: Rp ${result.toFixed(2)}`;
+                        break;
+                    case 'compound':
+                        result = amount * Math.pow((1 + rate), time);
+                        result = `Nilai akhir dengan Bunga Majemuk adalah: Rp ${result.toFixed(2)}`;
+                        break;
+                    case 'annuity':
+                        let annuityFactor = (Math.pow(1 + rate, time) - 1) / rate;
+                        result = amount * annuityFactor;
+                        result = `Nilai akhir dengan Anuitas adalah: Rp ${result.toFixed(2)}`;
+                        break;
+                    default:
+                        result = "Pilih jenis perhitungan.";
+                }
+            }
+
+            document.getElementById('result').innerText = result;
+        }
+    </script>
+</body>
+</html>
